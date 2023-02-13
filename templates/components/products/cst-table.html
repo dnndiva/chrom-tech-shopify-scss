@@ -1,0 +1,45 @@
+
+
+<table class="product-table">
+    <tr>
+        <th>SKU</th>
+        <th>Name</th>
+        {{#each cfacets}}
+            {{#if visible}}
+                <th>{{ title }}</th>
+            {{/if}}
+        {{/each}}
+        
+        <th>QTY</th>
+        <th></th>
+    </tr>
+    {{#each products}}
+    <tr class="productRow">
+        <td class="product-sku">{{ sku }}</td>
+        <td class="product-description">
+            <a class="quickview" data-event-type="product-click" data-product-id="{{id}}"> {{ name }}</a>
+        </td>
+
+        {{#each ../cfacets}}
+            {{#if visible}}
+            <td>
+                {{#each ../custom_fields}}
+                        {{#if  ../title '===' name }} 
+                            {{ value }}
+                        {{/if}}
+                {{/each}}
+            </td>
+            {{/if}}
+        {{/each}}
+            <td class="product-qty">
+                <input type="text" placeholder="0">
+            </td>
+            <td class="product-add-to-cart">
+                {{#if add_to_cart_url }}
+                    <a href="{{add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+    
+</table>

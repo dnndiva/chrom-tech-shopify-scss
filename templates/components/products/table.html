@@ -1,0 +1,101 @@
+<script>
+    const mathLib = {
+
+                // property
+                PI: 3.14,
+
+                // multiply(x,y) method
+                multiply: function(x, y) {
+                return x * y;
+                },
+
+                // divide(x,y) method
+                divide: function(x, y) {
+                return x / y;
+                },
+
+                cartJson: function(){
+                    var cartForm = [];
+                    $('.product-qty').each(function(i){    
+                        cartForm.push({
+                            productid: $(this).Data("product-id")
+                            
+                        });  
+                        
+                    });
+                    var jsonConvertedData = JSON.stringify(cartForm);  // Convert to json
+  consol.log(jsonConvertedData);
+                }
+
+
+    }
+
+console.log( mathLib.multiply(2, 2) );
+// create json object with pairs category - question 
+/*$(".sortable2").each(function(i){                           
+    $(this).children().each(function(j){    
+        var cat = arr_sections[i];
+        jsonObj.push({
+            category: arr_sections[i],
+            question: $(this).attr("ques_id")
+        });     
+    });
+});
+*/
+// create json object with pairs category - question 
+
+</script>
+
+<table class="productTable">
+    <tr>
+        <th>SKU</th>
+        <th>Name</th>
+        {{assignVar "count" 0}}
+        {{#each cfacets}}
+            {{#unless  (getVar "count") "==="  3 }} 
+                {{#if visible}}
+                <div style='{{incrementVar "count"}}'></div>
+                    <th>{{ title }}</th>
+                {{/if}}
+            {{/unless}}
+        {{/each}}
+        
+        <th>QTY</th>
+        <th></th>
+    </tr>
+    {{#each products}}
+    <tr class="productRow">
+        <td class="product-sku"><div class="mobile">SKU</div>{{ sku }}</td>
+        <td class="product-description"><div class="mobile">Name</div>
+            <a class="quickview" data-event-type="product-click" data-product-id="{{id}}"> {{ name }}</a>
+        </td>
+        {{assignVar "count" 0}}
+        {{#each ../cfacets}}
+            {{#if visible}}
+            <td>
+                {{#each ../custom_fields}}
+                    {{#unless  (getVar "count") "==="  3 }} 
+                        {{#if  ../title '===' name }} 
+                        <div style='{{incrementVar "count"}}'></div>
+                            <div class="mobile">{{ ../title }}</div>
+                            {{ value }}
+                        {{/if}}
+                    {{/unless}}
+                {{/each}}
+            </td> 
+            {{/if}}
+        {{/each}}
+            <td class="product-qty">
+                <div class="mobile"></div>QTY</div>
+                <input type="text"  data-product-id="{{id}}"  placeholder="0">
+            </td>
+            <td class="product-add-to-cart">
+                {{#if add_to_cart_url }}
+                    <a href="{{add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
+                {{/if}}
+            </td>
+        </tr>
+    {{/each}}
+    
+</table>
+<button type="button"  onclick="mathLib.cartJson()">Add to cart</button>
